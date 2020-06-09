@@ -8,8 +8,8 @@ class PID:
 
         Args:
             kP (float): Constant gain value for proportional controller
-            kI (float): Constant gain value for proportional controller
-            kD (float): Constant gain value for proportional controller
+            kI (float): Constant gain value for integral controller
+            kD (float): Constant gain value for derivative controller
             fromVal (float): The initial value you start from
             toVal (float): The desired setpoint
             prec (int): The number of iterations to run the control loop
