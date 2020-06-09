@@ -6,7 +6,7 @@
             name="viewport"
             content="width=device-width, initial-scale=1, minimum-scale=1"
         />
-        <meta name="generator" content="pdoc 0.8.1" />
+        <meta name="generator" content="pdoc 0.7.2" />
         <title>raPID API documentation</title>
         <meta name="description" content="" />
         <link
@@ -34,9 +34,6 @@
             #sidebar {
                 padding: 30px;
                 overflow: hidden;
-            }
-            #sidebar > *:last-child {
-                margin-bottom: 2cm;
             }
             .http-server-breadcrumbs {
                 font-size: 130%;
@@ -145,8 +142,10 @@
                 padding: 0;
             }
             #index h4 {
-                margin-top: 0.6em;
                 font-weight: bold;
+            }
+            #index h4 + ul {
+                margin-bottom: 0.6em;
             }
             @media (min-width: 200ex) {
                 #index .two-column {
@@ -289,10 +288,6 @@
             @media screen and (min-width: 700px) {
                 #sidebar {
                     width: 30%;
-                    height: 100vh;
-                    overflow: auto;
-                    position: sticky;
-                    top: 0;
                 }
                 #content {
                     width: 70%;
@@ -393,26 +388,29 @@
                     <h1 class="title">Module <code>raPID</code></h1>
                 </header>
                 <section id="section-intro">
-                    <details class="source"
-                        ><summary><span>Expand source code</span></summary>
-                        <pre><code class="python">import matplotlib.pyplot as plt
-import time
+                    <details class="source">
+                        <summary>
+                            <span>Expand source code</span>
+                        </summary>
+                        <pre><code class="python">import time
+import matplotlib.pyplot as plt
+plt.style.use(&#39;seaborn&#39;)
 
 
 class PID:
     def __init__(self, kP, kI, kD, fromVal, toVal, prec, time, waitBool):
-        """Init function run to declare variables within class scope
+        &#34;&#34;&#34;Init function run to declare variables within class scope
 
         Args:
             kP (float): Constant gain value for proportional controller
-            kI (float): Constant gain value for proportional controller
-            kD (float): Constant gain value for proportional controller
+            kI (float): Constant gain value for integral controller
+            kD (float): Constant gain value for derivative controller
             fromVal (float): The initial value you start from
             toVal (float): The desired setpoint
             prec (int): The number of iterations to run the control loop
             time (int): The amount of time to run the control loop for
             waitBool (bool): Enable/Disable wait time simulation when graphing controller values
-        """
+        &#34;&#34;&#34;
 
         self.kP = kP
         self.kI = kI
@@ -428,30 +426,30 @@ class PID:
         self.waitBool = waitBool
 
     def getFromVal(self):
-        """Get the value of fromVal
+        &#34;&#34;&#34;Get the value of fromVal
 
         Returns:
             float: fromVal
-        """
+        &#34;&#34;&#34;
         return self.fromVal
 
     def calcAdjKP(self):
-        """Calculate the adjustment based on the proportional controller
+        &#34;&#34;&#34;Calculate the adjustment based on the proportional controller
 
         Returns:
             float: adjust
-        """
+        &#34;&#34;&#34;
         err = self.toVal - self.fromVal
 
         adjust = err * self.kP
         return adjust
 
     def calcAdjKI(self):
-        """Calculate the adjustment based on the integral controller
+        &#34;&#34;&#34;Calculate the adjustment based on the integral controller
 
         Returns:
             float: adjust
-        """
+        &#34;&#34;&#34;
         err = self.toVal - self.fromVal
         self.integral += err * self.dt
 
@@ -459,11 +457,11 @@ class PID:
         return adjust
 
     def calcAdjKD(self):
-        """Calculate the adjustment based on the derivative controller
+        &#34;&#34;&#34;Calculate the adjustment based on the derivative controller
 
         Returns:
             float: adjust
-        """
+        &#34;&#34;&#34;
         err = self.toVal - self.fromVal
         self.prev_err = err
 
@@ -473,33 +471,33 @@ class PID:
         return adjust
 
     def update(self):
-        """Update position based on the PID controller
+        &#34;&#34;&#34;Update position based on the PID controller
 
         Returns:
             float: fromVal
-        """
+        &#34;&#34;&#34;
         adjust = self.calcAdjKP() + self.calcAdjKI() + self.calcAdjKD()
         self.fromVal += adjust
         return self.fromVal
 
     def graph(self):
-        """Graph data from a PID controller object with Matplotlib
-        """
+        &#34;&#34;&#34;Graph data from a PID controller object with Matplotlib
+        &#34;&#34;&#34;
         init = self.getFromVal()
-        print("Time: 0, Pos: {}".format(init))
+        print(&#34;Time: 0, Pos: {}&#34;.format(init))
 
         count = 1
         rFeedbackP = []
         ctimeP = []
         updateFreq = self.time/self.prec
 
-        while count <= self.prec:
+        while count &lt;= self.prec:
             feedback = self.update()
 
             ctime = float(round(count * updateFreq, 1))
             rFeedback = float(round(feedback, 5))
 
-            print("Time: {}, Pos: {}".format(ctime, rFeedback))
+            print(&#34;Time: {}, Pos: {}&#34;.format(ctime, rFeedback))
 
             rFeedbackP.append(rFeedback)
             ctimeP.append(ctime)
@@ -510,6 +508,9 @@ class PID:
             count += 1
 
         plt.plot(ctimeP, rFeedbackP)
+        plt.title(&#34;raPID Chart&#34;)
+        plt.xlabel(&#34;Time (s)&#34;)
+        plt.ylabel(&#34;Position (m)&#34;)
         plt.show()</code></pre>
                     </details>
                 </section>
@@ -520,18 +521,19 @@ class PID:
                     <h2 class="section-title" id="header-classes">Classes</h2>
                     <dl>
                         <dt id="raPID.PID">
-                            <code class="flex name class"
-                                ><span
+                            <code class="flex name class">
+                                <span
                                     >class <span class="ident">PID</span></span
-                                ><span>(</span
+                                >
+                                <span>(</span
                                 ><span
                                     >kP, kI, kD, fromVal, toVal, prec, time,
                                     waitBool)</span
-                                ></code
-                            >
+                                >
+                            </code>
                         </dt>
                         <dd>
-                            <div class="desc">
+                            <section class="desc">
                                 <p>
                                     Init function run to declare variables
                                     within class scope
@@ -551,7 +553,7 @@ class PID:
                                         :&ensp;<code>float</code>
                                     </dt>
                                     <dd>
-                                        Constant gain value for proportional
+                                        Constant gain value for integral
                                         controller
                                     </dd>
                                     <dt>
@@ -559,7 +561,7 @@ class PID:
                                         :&ensp;<code>float</code>
                                     </dt>
                                     <dd>
-                                        Constant gain value for proportional
+                                        Constant gain value for derivative
                                         controller
                                     </dd>
                                     <dt>
@@ -597,25 +599,25 @@ class PID:
                                         graphing controller values
                                     </dd>
                                 </dl>
-                            </div>
-                            <details class="source"
-                                ><summary
-                                    ><span>Expand source code</span></summary
-                                >
+                            </section>
+                            <details class="source">
+                                <summary>
+                                    <span>Expand source code</span>
+                                </summary>
                                 <pre><code class="python">class PID:
     def __init__(self, kP, kI, kD, fromVal, toVal, prec, time, waitBool):
-        """Init function run to declare variables within class scope
+        &#34;&#34;&#34;Init function run to declare variables within class scope
 
         Args:
             kP (float): Constant gain value for proportional controller
-            kI (float): Constant gain value for proportional controller
-            kD (float): Constant gain value for proportional controller
+            kI (float): Constant gain value for integral controller
+            kD (float): Constant gain value for derivative controller
             fromVal (float): The initial value you start from
             toVal (float): The desired setpoint
             prec (int): The number of iterations to run the control loop
             time (int): The amount of time to run the control loop for
             waitBool (bool): Enable/Disable wait time simulation when graphing controller values
-        """
+        &#34;&#34;&#34;
 
         self.kP = kP
         self.kI = kI
@@ -631,30 +633,30 @@ class PID:
         self.waitBool = waitBool
 
     def getFromVal(self):
-        """Get the value of fromVal
+        &#34;&#34;&#34;Get the value of fromVal
 
         Returns:
             float: fromVal
-        """
+        &#34;&#34;&#34;
         return self.fromVal
 
     def calcAdjKP(self):
-        """Calculate the adjustment based on the proportional controller
+        &#34;&#34;&#34;Calculate the adjustment based on the proportional controller
 
         Returns:
             float: adjust
-        """
+        &#34;&#34;&#34;
         err = self.toVal - self.fromVal
 
         adjust = err * self.kP
         return adjust
 
     def calcAdjKI(self):
-        """Calculate the adjustment based on the integral controller
+        &#34;&#34;&#34;Calculate the adjustment based on the integral controller
 
         Returns:
             float: adjust
-        """
+        &#34;&#34;&#34;
         err = self.toVal - self.fromVal
         self.integral += err * self.dt
 
@@ -662,11 +664,11 @@ class PID:
         return adjust
 
     def calcAdjKD(self):
-        """Calculate the adjustment based on the derivative controller
+        &#34;&#34;&#34;Calculate the adjustment based on the derivative controller
 
         Returns:
             float: adjust
-        """
+        &#34;&#34;&#34;
         err = self.toVal - self.fromVal
         self.prev_err = err
 
@@ -676,33 +678,33 @@ class PID:
         return adjust
 
     def update(self):
-        """Update position based on the PID controller
+        &#34;&#34;&#34;Update position based on the PID controller
 
         Returns:
             float: fromVal
-        """
+        &#34;&#34;&#34;
         adjust = self.calcAdjKP() + self.calcAdjKI() + self.calcAdjKD()
         self.fromVal += adjust
         return self.fromVal
 
     def graph(self):
-        """Graph data from a PID controller object with Matplotlib
-        """
+        &#34;&#34;&#34;Graph data from a PID controller object with Matplotlib
+        &#34;&#34;&#34;
         init = self.getFromVal()
-        print("Time: 0, Pos: {}".format(init))
+        print(&#34;Time: 0, Pos: {}&#34;.format(init))
 
         count = 1
         rFeedbackP = []
         ctimeP = []
         updateFreq = self.time/self.prec
 
-        while count <= self.prec:
+        while count &lt;= self.prec:
             feedback = self.update()
 
             ctime = float(round(count * updateFreq, 1))
             rFeedback = float(round(feedback, 5))
 
-            print("Time: {}, Pos: {}".format(ctime, rFeedback))
+            print(&#34;Time: {}, Pos: {}&#34;.format(ctime, rFeedback))
 
             rFeedbackP.append(rFeedback)
             ctimeP.append(ctime)
@@ -713,44 +715,49 @@ class PID:
             count += 1
 
         plt.plot(ctimeP, rFeedbackP)
+        plt.title(&#34;raPID Chart&#34;)
+        plt.xlabel(&#34;Time (s)&#34;)
+        plt.ylabel(&#34;Position (m)&#34;)
         plt.show()</code></pre>
                             </details>
                             <h3>Methods</h3>
                             <dl>
                                 <dt id="raPID.PID.calcAdjKD">
-                                    <code class="name flex"
-                                        ><span
+                                    <code class="name flex">
+                                        <span
                                             >def
                                             <span class="ident"
                                                 >calcAdjKD</span
                                             ></span
-                                        >(<span>self)</span></code
-                                    >
+                                        >(<span>self)</span>
+                                    </code>
                                 </dt>
                                 <dd>
-                                    <div class="desc">
+                                    <section class="desc">
                                         <p>
                                             Calculate the adjustment based on
                                             the derivative controller
                                         </p>
                                         <h2 id="returns">Returns</h2>
                                         <dl>
-                                            <dt><code>float</code></dt>
+                                            <dt>
+                                                <strong
+                                                    ><code>float</code></strong
+                                                >
+                                            </dt>
                                             <dd>adjust</dd>
                                         </dl>
-                                    </div>
-                                    <details class="source"
-                                        ><summary
-                                            ><span
-                                                >Expand source code</span
-                                            ></summary
-                                        >
+                                    </section>
+                                    <details class="source">
+                                        <summary>
+                                            <span>Expand source code</span>
+                                        </summary>
                                         <pre><code class="python">def calcAdjKD(self):
-    """Calculate the adjustment based on the derivative controller
+    &#34;&#34;&#34;Calculate the adjustment based on the derivative controller
 
     Returns:
         float: adjust
-    """
+    &#34;&#34;&#34;
     err = self.toVal - self.fromVal
     self.prev_err = err
 
@@ -761,39 +768,41 @@ class PID:
                                     </details>
                                 </dd>
                                 <dt id="raPID.PID.calcAdjKI">
-                                    <code class="name flex"
-                                        ><span
+                                    <code class="name flex">
+                                        <span
                                             >def
                                             <span class="ident"
                                                 >calcAdjKI</span
                                             ></span
-                                        >(<span>self)</span></code
-                                    >
+                                        >(<span>self)</span>
+                                    </code>
                                 </dt>
                                 <dd>
-                                    <div class="desc">
+                                    <section class="desc">
                                         <p>
                                             Calculate the adjustment based on
                                             the integral controller
                                         </p>
                                         <h2 id="returns">Returns</h2>
                                         <dl>
-                                            <dt><code>float</code></dt>
+                                            <dt>
+                                                <strong
+                                                    ><code>float</code></strong
+                                                >
+                                            </dt>
                                             <dd>adjust</dd>
                                         </dl>
-                                    </div>
-                                    <details class="source"
-                                        ><summary
-                                            ><span
-                                                >Expand source code</span
-                                            ></summary
-                                        >
+                                    </section>
+                                    <details class="source">
+                                        <summary>
+                                            <span>Expand source code</span>
+                                        </summary>
                                         <pre><code class="python">def calcAdjKI(self):
-    """Calculate the adjustment based on the integral controller
+    &#34;&#34;&#34;Calculate the adjustment based on the integral controller
 
     Returns:
         float: adjust
-    """
+    &#34;&#34;&#34;
     err = self.toVal - self.fromVal
     self.integral += err * self.dt
 
@@ -802,39 +811,41 @@ class PID:
                                     </details>
                                 </dd>
                                 <dt id="raPID.PID.calcAdjKP">
-                                    <code class="name flex"
-                                        ><span
+                                    <code class="name flex">
+                                        <span
                                             >def
                                             <span class="ident"
                                                 >calcAdjKP</span
                                             ></span
-                                        >(<span>self)</span></code
-                                    >
+                                        >(<span>self)</span>
+                                    </code>
                                 </dt>
                                 <dd>
-                                    <div class="desc">
+                                    <section class="desc">
                                         <p>
                                             Calculate the adjustment based on
                                             the proportional controller
                                         </p>
                                         <h2 id="returns">Returns</h2>
                                         <dl>
-                                            <dt><code>float</code></dt>
+                                            <dt>
+                                                <strong
+                                                    ><code>float</code></strong
+                                                >
+                                            </dt>
                                             <dd>adjust</dd>
                                         </dl>
-                                    </div>
-                                    <details class="source"
-                                        ><summary
-                                            ><span
-                                                >Expand source code</span
-                                            ></summary
-                                        >
+                                    </section>
+                                    <details class="source">
+                                        <summary>
+                                            <span>Expand source code</span>
+                                        </summary>
                                         <pre><code class="python">def calcAdjKP(self):
-    """Calculate the adjustment based on the proportional controller
+    &#34;&#34;&#34;Calculate the adjustment based on the proportional controller
 
     Returns:
         float: adjust
-    """
+    &#34;&#34;&#34;
     err = self.toVal - self.fromVal
 
     adjust = err * self.kP
@@ -842,80 +853,80 @@ class PID:
                                     </details>
                                 </dd>
                                 <dt id="raPID.PID.getFromVal">
-                                    <code class="name flex"
-                                        ><span
+                                    <code class="name flex">
+                                        <span
                                             >def
                                             <span class="ident"
                                                 >getFromVal</span
                                             ></span
-                                        >(<span>self)</span></code
-                                    >
+                                        >(<span>self)</span>
+                                    </code>
                                 </dt>
                                 <dd>
-                                    <div class="desc">
+                                    <section class="desc">
                                         <p>Get the value of fromVal</p>
                                         <h2 id="returns">Returns</h2>
                                         <dl>
-                                            <dt><code>float</code></dt>
+                                            <dt>
+                                                <strong
+                                                    ><code>float</code></strong
+                                                >
+                                            </dt>
                                             <dd>fromVal</dd>
                                         </dl>
-                                    </div>
-                                    <details class="source"
-                                        ><summary
-                                            ><span
-                                                >Expand source code</span
-                                            ></summary
-                                        >
+                                    </section>
+                                    <details class="source">
+                                        <summary>
+                                            <span>Expand source code</span>
+                                        </summary>
                                         <pre><code class="python">def getFromVal(self):
-    """Get the value of fromVal
+    &#34;&#34;&#34;Get the value of fromVal
 
     Returns:
         float: fromVal
-    """
+    &#34;&#34;&#34;
     return self.fromVal</code></pre>
                                     </details>
                                 </dd>
                                 <dt id="raPID.PID.graph">
-                                    <code class="name flex"
-                                        ><span
+                                    <code class="name flex">
+                                        <span
                                             >def
                                             <span class="ident"
                                                 >graph</span
                                             ></span
-                                        >(<span>self)</span></code
-                                    >
+                                        >(<span>self)</span>
+                                    </code>
                                 </dt>
                                 <dd>
-                                    <div class="desc">
+                                    <section class="desc">
                                         <p>
                                             Graph data from a PID controller
                                             object with Matplotlib
                                         </p>
-                                    </div>
-                                    <details class="source"
-                                        ><summary
-                                            ><span
-                                                >Expand source code</span
-                                            ></summary
-                                        >
+                                    </section>
+                                    <details class="source">
+                                        <summary>
+                                            <span>Expand source code</span>
+                                        </summary>
                                         <pre><code class="python">def graph(self):
-    """Graph data from a PID controller object with Matplotlib
-    """
+    &#34;&#34;&#34;Graph data from a PID controller object with Matplotlib
+    &#34;&#34;&#34;
     init = self.getFromVal()
-    print("Time: 0, Pos: {}".format(init))
+    print(&#34;Time: 0, Pos: {}&#34;.format(init))
 
     count = 1
     rFeedbackP = []
     ctimeP = []
     updateFreq = self.time/self.prec
 
-    while count <= self.prec:
+    while count &lt;= self.prec:
         feedback = self.update()
 
         ctime = float(round(count * updateFreq, 1))
         rFeedback = float(round(feedback, 5))
 
-        print("Time: {}, Pos: {}".format(ctime, rFeedback))
+        print(&#34;Time: {}, Pos: {}&#34;.format(ctime, rFeedback))
 
         rFeedbackP.append(rFeedback)
         ctimeP.append(ctime)
@@ -926,43 +937,48 @@ class PID:
         count += 1
 
     plt.plot(ctimeP, rFeedbackP)
+    plt.title(&#34;raPID Chart&#34;)
+    plt.xlabel(&#34;Time (s)&#34;)
+    plt.ylabel(&#34;Position (m)&#34;)
     plt.show()</code></pre>
                                     </details>
                                 </dd>
                                 <dt id="raPID.PID.update">
-                                    <code class="name flex"
-                                        ><span
+                                    <code class="name flex">
+                                        <span
                                             >def
                                             <span class="ident"
                                                 >update</span
                                             ></span
-                                        >(<span>self)</span></code
-                                    >
+                                        >(<span>self)</span>
+                                    </code>
                                 </dt>
                                 <dd>
-                                    <div class="desc">
+                                    <section class="desc">
                                         <p>
                                             Update position based on the PID
                                             controller
                                         </p>
                                         <h2 id="returns">Returns</h2>
                                         <dl>
-                                            <dt><code>float</code></dt>
+                                            <dt>
+                                                <strong
+                                                    ><code>float</code></strong
+                                                >
+                                            </dt>
                                             <dd>fromVal</dd>
                                         </dl>
-                                    </div>
-                                    <details class="source"
-                                        ><summary
-                                            ><span
-                                                >Expand source code</span
-                                            ></summary
-                                        >
+                                    </section>
+                                    <details class="source">
+                                        <summary>
+                                            <span>Expand source code</span>
+                                        </summary>
                                         <pre><code class="python">def update(self):
-    """Update position based on the PID controller
+    &#34;&#34;&#34;Update position based on the PID controller
 
     Returns:
         float: fromVal
-    """
+    &#34;&#34;&#34;
     adjust = self.calcAdjKP() + self.calcAdjKI() + self.calcAdjKD()
     self.fromVal += adjust
     return self.fromVal</code></pre>
@@ -975,7 +991,9 @@ class PID:
             </article>
             <nav id="sidebar">
                 <h1>Index</h1>
-                <div class="toc"><ul></ul></div>
+                <div class="toc">
+                    <ul></ul>
+                </div>
                 <ul id="index">
                     <li>
                         <h3><a href="#header-classes">Classes</a></h3>
@@ -1054,7 +1072,7 @@ class PID:
             <p>
                 Generated by
                 <a href="https://pdoc3.github.io/pdoc"
-                    ><cite>pdoc</cite> 0.8.1</a
+                    ><cite>pdoc</cite> 0.7.2</a
                 >.
             </p>
         </footer>
