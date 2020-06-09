@@ -114,4 +114,7 @@ class PID:
             count += 1
 
         plt.plot(ctimeP, rFeedbackP)
+        plt.title("raPID Chart")
+        plt.xlabel("Time (s)")
+        plt.ylabel("Position (m)")
         plt.show()

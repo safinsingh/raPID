@@ -12,6 +12,10 @@
 </p>
 <hr>
 
+## ✨ In Action
+
+<img src="./assets/plot.png">
+
 ## 💻 Try it out
 
 ```sh
