@@ -6,23 +6,17 @@ class PID:
     def __init__(self, kP, kI, kD, fromVal, toVal, prec, time, waitBool):
         """Init function run to declare variables within class scope
 
-        :param kP: Constant gain value for proportional controller
-        :type kP: float
-        :param kI: Constant gain value for integral controller
-        :type kI: float
-        :param kD: Constant gain value for derivative controller
-        :type kD: float
-        :param fromVal: The initial value you start from
-        :type fromVal: float
-        :param toVal: The desired setpoint
-        :type toVal: float
-        :param prec: The number of iterations to run the control loop
-        :type prec: int
-        :param time: The amount of time to run the control loop for
-        :type time: int
-        :param waitBool: Enable/Disable wait time simulation when graphing controller values
-        :type waitBool: bool
+        Args:
+            kP (float): Constant gain value for proportional controller
+            kI (float): Constant gain value for proportional controller
+            kD (float): Constant gain value for proportional controller
+            fromVal (float): The initial value you start from
+            toVal (float): The desired setpoint
+            prec (int): The number of iterations to run the control loop
+            time (int): The amount of time to run the control loop for
+            waitBool (bool): Enable/Disable wait time simulation when graphing controller values
         """
+
         self.kP = kP
         self.kI = kI
         self.kD = kD
@@ -37,18 +31,18 @@ class PID:
         self.waitBool = waitBool
 
     def getFromVal(self):
-        """Get the value of FromVal
+        """Get the value of fromVal
 
-        :return: fromVal
-        :rtype: string
+        Returns:
+            float: fromVal
         """
         return self.fromVal
 
     def calcAdjKP(self):
         """Calculate the adjustment based on the proportional controller
 
-        :return: adjust
-        :rtype: float
+        Returns:
+            float: adjust
         """
         err = self.toVal - self.fromVal
 
@@ -58,8 +52,8 @@ class PID:
     def calcAdjKI(self):
         """Calculate the adjustment based on the integral controller
 
-        :return: adjust
-        :rtype: float
+        Returns:
+            float: adjust
         """
         err = self.toVal - self.fromVal
         self.integral += err * self.dt
@@ -70,8 +64,8 @@ class PID:
     def calcAdjKD(self):
         """Calculate the adjustment based on the derivative controller
 
-        :return: adjust
-        :rtype: float
+        Returns:
+            float: adjust
         """
         err = self.toVal - self.fromVal
         self.prev_err = err
@@ -84,8 +78,8 @@ class PID:
     def update(self):
         """Update position based on the PID controller
 
-        :return: fromVal
-        :rtype: float
+        Returns:
+            float: fromVal
         """
         adjust = self.calcAdjKP() + self.calcAdjKI() + self.calcAdjKD()
         self.fromVal += adjust
