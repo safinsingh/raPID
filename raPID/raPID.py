@@ -1,5 +1,6 @@
-import matplotlib.pyplot as plt
 import time
+import matplotlib.pyplot as plt
+plt.style.use('seaborn')
 
 
 class PID:
