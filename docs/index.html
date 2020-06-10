@@ -393,6 +393,7 @@
                             <span>Expand source code</span>
                         </summary>
                         <pre><code class="python">import time
+import fileinput
 import matplotlib.pyplot as plt
 plt.style.use(&#39;seaborn&#39;)
 
@@ -511,7 +512,42 @@ class PID:
         plt.title(&#34;raPID Chart&#34;)
         plt.xlabel(&#34;Time (s)&#34;)
         plt.ylabel(&#34;Position (m)&#34;)
-        plt.show()</code></pre>
+        plt.show()
+
+    def gen_manim(self):
+        &#34;&#34;&#34;(BETA): Animate movement of object according to PID loop with Manim
+        &#34;&#34;&#34;
+
+        arr = []
+
+        init = self.getFromVal()
+        arr.append(init)
+
+        count = 1
+
+        while count &lt;= self.prec:
+            feedback = self.update()
+
+            rFeedback = float(round(feedback, 5))
+            arr.append(rFeedback)
+
+            count += 1
+
+        with open(&#39;sim.py&#39;, &#39;r&#39;) as file:
+            filedata = file.read()
+
+        filedata = filedata.replace(&#34;pass&#34;, &#34;arr = &#34; + str(arr) + &#34;&#34;&#34;
+        obj = Sphere().move_to(np.array([5, 0, 0]))
+
+        self.wait()
+        
+        for i in arr:
+            self.play(obj.move_to(np.array([i, 0, 0])), run_time=1/(2 * (5 - i)))
+
+        self.wait()&#34;&#34;&#34;)
+
+        with open(&#39;sim.py&#39;, &#39;w&#39;) as file:
+            file.write(filedata)</code></pre>
                     </details>
                 </section>
                 <section></section>
@@ -718,7 +754,42 @@ class PID:
         plt.title(&#34;raPID Chart&#34;)
         plt.xlabel(&#34;Time (s)&#34;)
         plt.ylabel(&#34;Position (m)&#34;)
-        plt.show()</code></pre>
+        plt.show()
+
+    def gen_manim(self):
+        &#34;&#34;&#34;(BETA): Animate movement of object according to PID loop with Manim
+        &#34;&#34;&#34;
+
+        arr = []
+
+        init = self.getFromVal()
+        arr.append(init)
+
+        count = 1
+
+        while count &lt;= self.prec:
+            feedback = self.update()
+
+            rFeedback = float(round(feedback, 5))
+            arr.append(rFeedback)
+
+            count += 1
+
+        with open(&#39;sim.py&#39;, &#39;r&#39;) as file:
+            filedata = file.read()
+
+        filedata = filedata.replace(&#34;pass&#34;, &#34;arr = &#34; + str(arr) + &#34;&#34;&#34;
+        obj = Sphere().move_to(np.array([5, 0, 0]))
+
+        self.wait()
+        
+        for i in arr:
+            self.play(obj.move_to(np.array([i, 0, 0])), run_time=1/(2 * (5 - i)))
+
+        self.wait()&#34;&#34;&#34;)
+
+        with open(&#39;sim.py&#39;, &#39;w&#39;) as file:
+            file.write(filedata)</code></pre>
                             </details>
                             <h3>Methods</h3>
                             <dl>
@@ -850,6 +921,63 @@ class PID:
 
     adjust = err * self.kP
     return adjust</code></pre>
+                                    </details>
+                                </dd>
+                                <dt id="raPID.PID.gen_manim">
+                                    <code class="name flex">
+                                        <span
+                                            >def
+                                            <span class="ident"
+                                                >gen_manim</span
+                                            ></span
+                                        >(<span>self)</span>
+                                    </code>
+                                </dt>
+                                <dd>
+                                    <section class="desc">
+                                        <p>
+                                            (BETA): Animate movement of object
+                                            according to PID loop with Manim
+                                        </p>
+                                    </section>
+                                    <details class="source">
+                                        <summary>
+                                            <span>Expand source code</span>
+                                        </summary>
+                                        <pre><code class="python">def gen_manim(self):
+    &#34;&#34;&#34;(BETA): Animate movement of object according to PID loop with Manim
+    &#34;&#34;&#34;
+
+    arr = []
+
+    init = self.getFromVal()
+    arr.append(init)
+
+    count = 1
+
+    while count &lt;= self.prec:
+        feedback = self.update()
+
+        rFeedback = float(round(feedback, 5))
+        arr.append(rFeedback)
+
+        count += 1
+
+    with open(&#39;sim.py&#39;, &#39;r&#39;) as file:
+        filedata = file.read()
+
+    filedata = filedata.replace(&#34;pass&#34;, &#34;arr = &#34; + str(arr) + &#34;&#34;&#34;
+    obj = Sphere().move_to(np.array([5, 0, 0]))
+
+    self.wait()
+    
+    for i in arr:
+        self.play(obj.move_to(np.array([i, 0, 0])), run_time=1/(2 * (5 - i)))
+
+    self.wait()&#34;&#34;&#34;)
+
+    with open(&#39;sim.py&#39;, &#39;w&#39;) as file:
+        file.write(filedata)</code></pre>
                                     </details>
                                 </dd>
                                 <dt id="raPID.PID.getFromVal">
@@ -1031,6 +1159,15 @@ class PID:
                                                 title="raPID.PID.calcAdjKP"
                                                 href="#raPID.PID.calcAdjKP"
                                                 >calcAdjKP</a
+                                            ></code
+                                        >
+                                    </li>
+                                    <li>
+                                        <code
+                                            ><a
+                                                title="raPID.PID.gen_manim"
+                                                href="#raPID.PID.gen_manim"
+                                                >gen_manim</a
                                             ></code
                                         >
                                     </li>
