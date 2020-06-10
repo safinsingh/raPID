@@ -1,4 +1,5 @@
 import time
+import fileinput
 import matplotlib.pyplot as plt
 plt.style.use('seaborn')
 
@@ -118,3 +119,38 @@ class PID:
         plt.xlabel("Time (s)")
         plt.ylabel("Position (m)")
         plt.show()
+
+    def gen_manim(self):
+        """(BETA): Animate movement of object according to PID loop with Manim
+        """
+
+        arr = []
+
+        init = self.getFromVal()
+        arr.append(init)
+
+        count = 1
+
+        while count <= self.prec:
+            feedback = self.update()
+
+            rFeedback = float(round(feedback, 5))
+            arr.append(rFeedback)
+
+            count += 1
+
+        with open('sim.py', 'r') as file:
+            filedata = file.read()
+
+        filedata = filedata.replace("pass", "arr = " + str(arr) + """
+        obj = Sphere().move_to(np.array([5, 0, 0]))
+
+        self.wait()
+        
+        for i in arr:
+            self.play(obj.move_to(np.array([i, 0, 0])), run_time=1/(2 * (5 - i)))
+
+        self.wait()""")
+
+        with open('sim.py', 'w') as file:
+            file.write(filedata)
