@@ -21,7 +21,7 @@
 ```sh
 git clone https://github.com/safinsingh/raPID.git
 conda install --file requirements.txt
-python test.py
+python controller.py
 ```
 
 ## 👨‍💻 Authors
