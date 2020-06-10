@@ -1,5 +1,5 @@
 import time
-import fileinput
+import numpy as np
 import matplotlib.pyplot as plt
 plt.style.use('seaborn')
 
@@ -32,13 +32,16 @@ class PID:
         self.time = time
         self.waitBool = waitBool
 
+        self.READfromVal = self.fromVal
+        self.READtoVal = self.toVal
+
     def getFromVal(self):
         """Get the value of fromVal
 
         Returns:
-            float: fromVal
+            float: READfromVal
         """
-        return self.fromVal
+        return self.READfromVal
 
     def calcAdjKP(self):
         """Calculate the adjustment based on the proportional controller
@@ -139,18 +142,26 @@ class PID:
 
             count += 1
 
-        with open('sim.py', 'r') as file:
+        interval = round(1 / self.prec, 5)
+        intervalC = 0
+
+        npArr = np.array(arr)
+        npArr = np.interp(npArr, (npArr.min(), npArr.max()), (0, +1))
+
+        open("sim/sim.csv", 'w').close()
+
+        for i in npArr:
+            timestamp = interval * intervalC
+            with open('sim.csv', 'a') as file:
+                file.write(str('{0:.4f}'.format(round(timestamp, 4))) +
+                           "," + str('{0:.4f}'.format(round(i, 4))) + "\n")
+            intervalC += 1
+
+        with open('sim/sim.py', 'r') as file:
             filedata = file.read()
 
-        filedata = filedata.replace("pass", "arr = " + str(arr[1:]) + """
-        obj = Sphere().move_to(np.array([5, 0, 0]))
+        filedata = filedata.replace("ENDVALUEHERE", str(self.READtoVal))
+        filedata = filedata.replace("STARTVALUEHERE", str(self.READfromVal))
 
-        self.wait()
-        
-        for i in arr:
-            self.play(obj.move_to, np.array([i, 0, 0]), run_time=1/(2 * (5 - i)))
-
-        self.wait()""")
-
-        with open('sim.py', 'w') as file:
+        with open('sim/sim.py', 'w') as file:
             file.write(filedata)

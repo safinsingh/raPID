@@ -393,7 +393,7 @@
                             <span>Expand source code</span>
                         </summary>
                         <pre><code class="python">import time
-import fileinput
+import numpy as np
 import matplotlib.pyplot as plt
 plt.style.use(&#39;seaborn&#39;)
 
@@ -426,13 +426,16 @@ class PID:
         self.time = time
         self.waitBool = waitBool
 
+        self.READfromVal = self.fromVal
+        self.READtoVal = self.toVal
+
     def getFromVal(self):
         &#34;&#34;&#34;Get the value of fromVal
 
         Returns:
-            float: fromVal
+            float: READfromVal
         &#34;&#34;&#34;
-        return self.fromVal
+        return self.READfromVal
 
     def calcAdjKP(self):
         &#34;&#34;&#34;Calculate the adjustment based on the proportional controller
@@ -533,20 +536,28 @@ class PID:
 
             count += 1
 
-        with open(&#39;sim.py&#39;, &#39;r&#39;) as file:
+        interval = round(1 / self.prec, 5)
+        intervalC = 0
+
+        npArr = np.array(arr)
+        npArr = np.interp(npArr, (npArr.min(), npArr.max()), (0, +1))
+
+        open(&#34;sim/sim.csv&#34;, &#39;w&#39;).close()
+
+        for i in npArr:
+            timestamp = interval * intervalC
+            with open(&#39;sim.csv&#39;, &#39;a&#39;) as file:
+                file.write(str(&#39;{0:.4f}&#39;.format(round(timestamp, 4))) +
+                           &#34;,&#34; + str(&#39;{0:.4f}&#39;.format(round(i, 4))) + &#34;\n&#34;)
+            intervalC += 1
+
+        with open(&#39;sim/sim.py&#39;, &#39;r&#39;) as file:
             filedata = file.read()
 
-        filedata = filedata.replace(&#34;pass&#34;, &#34;arr = &#34; + str(arr) + &#34;&#34;&#34;
-        obj = Sphere().move_to(np.array([5, 0, 0]))
+        filedata = filedata.replace(&#34;ENDVALUEHERE&#34;, str(self.READtoVal))
+        filedata = filedata.replace(&#34;STARTVALUEHERE&#34;, str(self.READfromVal))
 
-        self.wait()
-        
-        for i in arr:
-            self.play(obj.move_to(np.array([i, 0, 0])), run_time=1/(2 * (5 - i)))
-
-        self.wait()&#34;&#34;&#34;)
-
-        with open(&#39;sim.py&#39;, &#39;w&#39;) as file:
+        with open(&#39;sim/sim.py&#39;, &#39;w&#39;) as file:
             file.write(filedata)</code></pre>
                     </details>
                 </section>
@@ -668,13 +679,16 @@ class PID:
         self.time = time
         self.waitBool = waitBool
 
+        self.READfromVal = self.fromVal
+        self.READtoVal = self.toVal
+
     def getFromVal(self):
         &#34;&#34;&#34;Get the value of fromVal
 
         Returns:
-            float: fromVal
+            float: READfromVal
         &#34;&#34;&#34;
-        return self.fromVal
+        return self.READfromVal
 
     def calcAdjKP(self):
         &#34;&#34;&#34;Calculate the adjustment based on the proportional controller
@@ -775,20 +789,28 @@ class PID:
 
             count += 1
 
-        with open(&#39;sim.py&#39;, &#39;r&#39;) as file:
+        interval = round(1 / self.prec, 5)
+        intervalC = 0
+
+        npArr = np.array(arr)
+        npArr = np.interp(npArr, (npArr.min(), npArr.max()), (0, +1))
+
+        open(&#34;sim/sim.csv&#34;, &#39;w&#39;).close()
+
+        for i in npArr:
+            timestamp = interval * intervalC
+            with open(&#39;sim.csv&#39;, &#39;a&#39;) as file:
+                file.write(str(&#39;{0:.4f}&#39;.format(round(timestamp, 4))) +
+                           &#34;,&#34; + str(&#39;{0:.4f}&#39;.format(round(i, 4))) + &#34;\n&#34;)
+            intervalC += 1
+
+        with open(&#39;sim/sim.py&#39;, &#39;r&#39;) as file:
             filedata = file.read()
 
-        filedata = filedata.replace(&#34;pass&#34;, &#34;arr = &#34; + str(arr) + &#34;&#34;&#34;
-        obj = Sphere().move_to(np.array([5, 0, 0]))
+        filedata = filedata.replace(&#34;ENDVALUEHERE&#34;, str(self.READtoVal))
+        filedata = filedata.replace(&#34;STARTVALUEHERE&#34;, str(self.READfromVal))
 
-        self.wait()
-        
-        for i in arr:
-            self.play(obj.move_to(np.array([i, 0, 0])), run_time=1/(2 * (5 - i)))
-
-        self.wait()&#34;&#34;&#34;)
-
-        with open(&#39;sim.py&#39;, &#39;w&#39;) as file:
+        with open(&#39;sim/sim.py&#39;, &#39;w&#39;) as file:
             file.write(filedata)</code></pre>
                             </details>
                             <h3>Methods</h3>
@@ -963,20 +985,28 @@ class PID:
 
         count += 1
 
-    with open(&#39;sim.py&#39;, &#39;r&#39;) as file:
+    interval = round(1 / self.prec, 5)
+    intervalC = 0
+
+    npArr = np.array(arr)
+    npArr = np.interp(npArr, (npArr.min(), npArr.max()), (0, +1))
+
+    open(&#34;sim/sim.csv&#34;, &#39;w&#39;).close()
+
+    for i in npArr:
+        timestamp = interval * intervalC
+        with open(&#39;sim.csv&#39;, &#39;a&#39;) as file:
+            file.write(str(&#39;{0:.4f}&#39;.format(round(timestamp, 4))) +
+                       &#34;,&#34; + str(&#39;{0:.4f}&#39;.format(round(i, 4))) + &#34;\n&#34;)
+        intervalC += 1
+
+    with open(&#39;sim/sim.py&#39;, &#39;r&#39;) as file:
         filedata = file.read()
 
-    filedata = filedata.replace(&#34;pass&#34;, &#34;arr = &#34; + str(arr) + &#34;&#34;&#34;
-    obj = Sphere().move_to(np.array([5, 0, 0]))
+    filedata = filedata.replace(&#34;ENDVALUEHERE&#34;, str(self.READtoVal))
+    filedata = filedata.replace(&#34;STARTVALUEHERE&#34;, str(self.READfromVal))
 
-    self.wait()
-    
-    for i in arr:
-        self.play(obj.move_to(np.array([i, 0, 0])), run_time=1/(2 * (5 - i)))
-
-    self.wait()&#34;&#34;&#34;)
-
-    with open(&#39;sim.py&#39;, &#39;w&#39;) as file:
+    with open(&#39;sim/sim.py&#39;, &#39;w&#39;) as file:
         file.write(filedata)</code></pre>
                                     </details>
                                 </dd>
@@ -1000,7 +1030,7 @@ class PID:
                                                     ><code>float</code></strong
                                                 >
                                             </dt>
-                                            <dd>fromVal</dd>
+                                            <dd>READfromVal</dd>
                                         </dl>
                                     </section>
                                     <details class="source">
@@ -1011,9 +1041,9 @@ class PID:
     &#34;&#34;&#34;Get the value of fromVal
 
     Returns:
-        float: fromVal
+        float: READfromVal
     &#34;&#34;&#34;
-    return self.fromVal</code></pre>
+    return self.READfromVal</code></pre>
                                     </details>
                                 </dd>
                                 <dt id="raPID.PID.graph">

@@ -15,7 +15,7 @@
 ## ✨ In Action
 
 <img src="./assets/plot.png">
-<img src="./assets/Sim.gif">
+<img src="./assets/interpolation.gif">
 
 ## 💻 Try it out
 
@@ -25,7 +25,7 @@ conda install --file requirements.txt
 python controller.py
 ```
 
-> OPTIONAL: For object rendering functionality with Manim, please follow the instructions at https://github.com/ManimCommunity/manim to install manim into the manim/ directory
+> OPTIONAL: For object rendering functionality with Manim, please follow the instructions at https://github.com/ManimCommunity/manim to install manim into the manim/ directory. The NumPy, SKLearn, and Pandas libraries are optional and only used for interpolation with manim.
 
 ## 👨‍💻 Authors
 
