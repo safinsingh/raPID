@@ -124,7 +124,7 @@ class PID:
         plt.show()
 
     def gen_manim(self):
-        """(BETA): Animate movement of object according to PID loop with Manim
+        """Animate movement of object according to PID loop with Manim
         """
 
         arr = []
