@@ -14,11 +14,9 @@
 
 ## ✨ In Action
 
-<img src="./assets/plot.png">
-<br>
-<br>
 <p align="center">
-  <img src="./assets/interpolation.gif">
+  <img src="./assets/plot.png" width="55%" />
+  <img src="./assets/interpolation.gif" width="40%" />
 </p>
 
 ## 💻 Try it out
