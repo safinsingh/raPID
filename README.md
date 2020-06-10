@@ -15,7 +15,11 @@
 ## ✨ In Action
 
 <img src="./assets/plot.png">
-<img src="./assets/interpolation.gif">
+<br>
+<br>
+<p align="center">
+  <img src="./assets/interpolation.gif">
+</p>
 
 ## 💻 Try it out
 
