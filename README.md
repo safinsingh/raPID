@@ -23,7 +23,7 @@
 
 ```sh
 git clone https://github.com/safinsingh/raPID.git
-conda install --file requirements.txt
+conda install --file requirements.txt or pip3 install -r requirements.txt
 python controller.py
 ```
 
